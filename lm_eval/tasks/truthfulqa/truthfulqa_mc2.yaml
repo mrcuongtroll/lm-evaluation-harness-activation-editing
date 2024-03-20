@@ -1,4 +1,4 @@
-include: truthfulqa_mc1.yaml
+include: truthfulqa_subset_mc1.yaml
 task: truthfulqa_mc2
 doc_to_target: 0
 doc_to_choice: "{{mc2_targets.choices}}"
