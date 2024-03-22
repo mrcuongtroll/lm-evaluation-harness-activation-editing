@@ -1101,3 +1101,17 @@ class GuidedLM(TemplateLM):
         pbar.close()
 
         return res
+
+    def _encode_pair(self, context, continuation):
+        n_spaces = len(context) - len(context.rstrip())
+        if n_spaces > 0:
+            continuation = context[-n_spaces:] + continuation
+            context = context[:-n_spaces]
+
+        whole_enc = self.tok_encode(context + continuation)
+        context_enc = self.tok_encode(context)
+
+        context_enc_len = len(context_enc)
+        continuation_enc = whole_enc[context_enc_len:]
+
+        return context_enc, continuation_enc
