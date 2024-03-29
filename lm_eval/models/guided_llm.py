@@ -40,7 +40,7 @@ activation_editing repo and this repo in the same directory so that the followin
 """
 import sys
 sys.path.append('../activation_editing/')
-from model import GuidedLlamaForCausalLM, GuidanceConfig
+from model import AutoGuidedModelForCausalLM, GuidedModelForCausalLM, GuidanceConfig
 
 
 eval_logger = utils.eval_logger
@@ -74,17 +74,17 @@ def _get_accelerate_args(
 @register_model("guided", "guided-lm", "guided-llm", "guidance")
 class GuidedLM(TemplateLM):
     """
-    An abstracted Huggingface model class. Coded to work only with GuidedLlamaForCausalLM for now.
+    An abstracted Huggingface model class. Coded to work only with GuidedModelForCausalLM for now.
 
     Supports data-parallel multi-GPU with HF Accelerate.
     """
 
-    AUTO_MODEL_CLASS = GuidedLlamaForCausalLM
+    AUTO_MODEL_CLASS = AutoGuidedModelForCausalLM
     _DEFAULT_MAX_LENGTH = 2048
 
     def __init__(
         self,
-        pretrained: Union[str, GuidedLlamaForCausalLM],
+        pretrained: Union[str, GuidedModelForCausalLM],
         # Guided LLM options
         guidance_modules_path: Optional[str] = None,
         alpha: Optional[float] = None,
@@ -430,7 +430,7 @@ class GuidedLM(TemplateLM):
         """
         assert backend == "default"
 
-        assert self.AUTO_MODEL_CLASS == GuidedLlamaForCausalLM
+        assert self.AUTO_MODEL_CLASS == AutoGuidedModelForCausalLM
         return None
 
     def _get_config(
