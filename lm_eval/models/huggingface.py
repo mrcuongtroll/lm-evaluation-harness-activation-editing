@@ -763,7 +763,7 @@ class HFLM(TemplateLM):
                     "input_ids": inps,
                     "attention_mask": attn_mask
                 }
-                return self.model(base, return_dict=True).intervened_outputs
+                return self.model(base, return_dict=True).intervened_outputs.logits
             if attn_mask is not None or labels is not None:
                 assert attn_mask is not None and labels is not None
                 assert self.AUTO_MODEL_CLASS == transformers.AutoModelForSeq2SeqLM
