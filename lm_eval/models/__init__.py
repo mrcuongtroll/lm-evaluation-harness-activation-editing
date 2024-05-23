@@ -9,7 +9,8 @@ from . import (
     optimum_lm,
     textsynth,
     vllm_causallms,
-    guided_llm
+    guided_llm,
+    iti
 )
 
 
