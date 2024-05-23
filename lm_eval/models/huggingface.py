@@ -233,9 +233,10 @@ class HFLM(TemplateLM):
                         "Failed to place model onto specified device. This may be because the model is quantized via `bitsandbytes` or `device_map` is provided. If the desired GPU is being used, this message is safe to ignore."
                     )
 
-        if pv:
+        self.pv = pv
+        if self.pv:
             import pyvene
-            self._model = pyvene.IntervenableModel.load(pv, self._model)
+            self._model = pyvene.IntervenableModel.load(self.pv, self._model)
 
         self._create_tokenizer(
             pretrained,
@@ -757,6 +758,12 @@ class HFLM(TemplateLM):
         logits returned from the model's decoder
         """
         with torch.no_grad():
+            if self.pv is not None:
+                base = {
+                    "input_ids": inps,
+                    "attention_mask": attn_mask
+                }
+                return self.model(base).logits
             if attn_mask is not None or labels is not None:
                 assert attn_mask is not None and labels is not None
                 assert self.AUTO_MODEL_CLASS == transformers.AutoModelForSeq2SeqLM
