@@ -108,6 +108,7 @@ class HFLM(TemplateLM):
         offload_folder: Optional[Union[str, os.PathLike]] = "./offload",
         # PEFT and quantization options
         peft: Optional[str] = None,
+        pv: Optional[str] = None,
         autogptq: Optional[Union[bool, str]] = False,
         prefix_token_id: Optional[int] = None,
         **kwargs,
@@ -210,6 +211,7 @@ class HFLM(TemplateLM):
                 max_cpu_memory=max_cpu_memory,
                 offload_folder=offload_folder,
                 peft=peft,
+                pv=pv,
                 autogptq=autogptq,
                 **kwargs,
             )
@@ -487,6 +489,7 @@ class HFLM(TemplateLM):
         offload_folder: Optional[str] = "./offload",
         # PEFT and quantization options
         peft: Optional[str] = None,
+        pv: Optional[str] = None,
         autogptq: Optional[Union[bool, str]] = False,
         **kwargs,
     ) -> None:
@@ -568,6 +571,10 @@ class HFLM(TemplateLM):
             self._model = PeftModel.from_pretrained(
                 self._model, peft, revision=revision
             )
+
+        if pv:
+            import pyvene
+            self._model = pyvene.IntervenableModel.load(pv, self._model)
 
         return None
 
