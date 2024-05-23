@@ -34,6 +34,7 @@ from lm_eval.models.utils import (
     stop_sequences_criteria,
 )
 
+import sys
 sys.path.append('../honest_llama/')
 from llama import LlamaForCausalLM, LlamaConfig
 
