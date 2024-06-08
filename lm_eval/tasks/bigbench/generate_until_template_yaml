@@ -4,7 +4,7 @@ output_type: generate_until
 dataset_kwargs:
   # num_shots: 0 # TODO: num of shots for `bigbench` HF dataset should be controlled through this, not through the typical methods
   # subtask_name: null
-test_split: default
+test_split: validation
 doc_to_text: inputs
 doc_to_target: "{{targets[0]}}"
 generation_kwargs:
