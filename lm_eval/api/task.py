@@ -370,6 +370,7 @@ class Task(abc.ABC):
         world_size=None,
         cache_requests=False,
         rewrite_requests_cache=False,
+        tokenizer=None
     ) -> None:
         """Build a set of Instances for a task, and store them in task.instances"""
 
@@ -418,6 +419,7 @@ class Task(abc.ABC):
             fewshot_ctx = self.fewshot_context(
                 doc,
                 0 if self.config.num_fewshot is None else self.config.num_fewshot,
+                tokenizer=tokenizer
             )
 
             # TODO: we should override self.config.repeats if doing greedy gen so users don't waste time+compute
@@ -522,6 +524,7 @@ class Task(abc.ABC):
         num_fewshot,
         rnd=random.Random(1234),
         description=None,
+        tokenizer=None
     ):
         """Returns a fewshot context string that is made up of a prepended description
         (if provided), the `num_fewshot` number of examples, and an appended prompt example.
@@ -929,7 +932,7 @@ class ConfigurableTask(Task):
             return super().fewshot_docs()
 
     @utils.positional_deprecated
-    def fewshot_context(self, doc: str, num_fewshot: int) -> str:
+    def fewshot_context(self, doc: str, num_fewshot: int, tokenizer=None) -> str:
         """Returns a fewshot context string that is made up of a prepended description
         (if provided), the `num_fewshot` number of examples, and an appended prompt example.
 
@@ -951,18 +954,33 @@ class ConfigurableTask(Task):
 
         example = self.doc_to_text(doc)
         if self.multiple_input:
-            return labeled_examples
+            context = labeled_examples
         else:
             if isinstance(example, str):
-                return labeled_examples + example
+                context = labeled_examples + example
             elif isinstance(example, list):
-                return [labeled_examples + ex for ex in example]
+                context = [labeled_examples + ex for ex in example]
             elif isinstance(example, int):
                 if self.config.doc_to_choice is not None:
                     choices = self.doc_to_choice(doc)
-                    return labeled_examples + choices[example]
+                    context = labeled_examples + choices[example]
                 else:
-                    return labeled_examples + str(example)
+                    context = labeled_examples + str(example)
+        if tokenizer is not None:
+            if isinstance(context, str):
+                return tokenizer.apply_chat_template(
+                    [{"role": "user", "content": context}],
+                    tokenizer=False,
+                    add_generation_prompt=True
+                )
+            elif isinstance(context, list):
+                return [tokenizer.apply_chat_template(
+                    [{"role": "user", "content": c}],
+                    tokenizer=False,
+                    add_generation_prompt=True
+                ) for c in context]
+        else:
+            return context
 
     def apply_filters(self):
         """Iterates over FilterEnsembles and applies them to instances"""

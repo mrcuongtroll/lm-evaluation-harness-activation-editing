@@ -709,6 +709,7 @@ class GuidedLM(TemplateLM):
             stopping_criteria=stopping_criteria,
             pad_token_id=self.tokenizer.pad_token_id,
             use_cache=True,
+            repetition_penalty=1.25,
             **generation_kwargs,
         )
 

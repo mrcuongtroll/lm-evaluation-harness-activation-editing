@@ -26,7 +26,7 @@ from lm_eval.utils import eval_logger, positional_deprecated, simple_parse_args_
 
 
 if TYPE_CHECKING:
-    from lm_eval.api.model import LM
+    from lm_eval.api.model import LM, TemplateLM
     from lm_eval.tasks import Task
 
 
@@ -55,6 +55,7 @@ def simple_evaluate(
     random_seed: int = 0,
     numpy_random_seed: int = 1234,
     torch_random_seed: int = 1234,
+    use_chat_template: bool = False
 ):
     """Instantiate and evaluate a model on a list of tasks.
 
@@ -102,6 +103,8 @@ def simple_evaluate(
         Random seed for numpy. If set to None, the seed will not be set.
     :param torch_random_seed: int
         Random seed for torch. If set to None, the seed will not be set.
+    :param use_chat_template: bool
+        Use the LLM's chat template when creating requests
 
     :return
         Dictionary of results
@@ -241,6 +244,7 @@ def simple_evaluate(
         write_out=write_out,
         log_samples=log_samples,
         verbosity=verbosity,
+        use_chat_template=use_chat_template,
     )
 
     if lm.rank == 0:
@@ -284,6 +288,7 @@ def evaluate(
     write_out: bool = False,
     log_samples: bool = True,
     verbosity: str = "INFO",
+    use_chat_template: bool = False
 ):
     """Instantiate and evaluate a model on a list of tasks.
 
@@ -299,6 +304,8 @@ def evaluate(
         If True, write out an example document and model input for checking task integrity
     :param log_samples: bool
         If True, write out all model outputs and documents for per-sample measurement and post-hoc analysis
+    :param use_chat_template: bool
+        If True, use the LLM's chat template when creating task requests.
     :return
         Dictionary of results
     """
@@ -328,6 +335,7 @@ def evaluate(
             world_size=lm.world_size,
             cache_requests=cache_requests,
             rewrite_requests_cache=rewrite_requests_cache,
+            tokenizer=getattr(lm, 'tokenizer', None) if use_chat_template else None
         )
         eval_logger.debug(
             f"Task: {task_output.task_name}; number of requests on this rank: {len(task.instances)}"

@@ -228,6 +228,11 @@ def setup_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Sets trust_remote_code to True to execute code to create HF Datasets from the Hub",
     )
+    parser.add_argument(
+        "--use_chat_template",
+        action="store_true",
+        help="Whether to use the LLM's chat template when creating requests",
+    )
 
     return parser
 
@@ -359,6 +364,7 @@ def cli_evaluate(args: Union[argparse.Namespace, None] = None) -> None:
         random_seed=args.seed[0],
         numpy_random_seed=args.seed[1],
         torch_random_seed=args.seed[2],
+        use_chat_template=args.use_chat_template,
         **request_caching_args,
     )
 
