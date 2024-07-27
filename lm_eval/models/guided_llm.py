@@ -728,6 +728,7 @@ class GuidedLM(TemplateLM):
     def loglikelihood_rolling(
         self, requests: List[Instance], disable_tqdm: bool = False
     ) -> List[float]:
+        self.model.generation_mode(True)
         loglikelihoods = []
 
         adaptive_batch_size = None
