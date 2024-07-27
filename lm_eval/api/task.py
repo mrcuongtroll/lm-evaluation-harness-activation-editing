@@ -972,7 +972,8 @@ class ConfigurableTask(Task):
                     [
                         {"role": "system", "content": "You are a truthful assistant that always answer questions in a "
                                                       "truthful, short, and concise manner,"
-                                                      " with as few words as possible"},
+                                                      " with as few words as possible. If you are unsure about the "
+                                                      "answer, just say \"I don't know\"."},
                         {"role": "user", "content": context}
                     ],
                     tokenizer=False,
@@ -983,7 +984,8 @@ class ConfigurableTask(Task):
                     [
                         {"role": "system", "content": "You are a truthful assistant that always answer questions in a "
                                                       "truthful, short, and concise manner,"
-                                                      " with as few words as possible"},
+                                                      " with as few words as possible. If you are unsure about the "
+                                                      "answer, just say \"I don't know\"."},
                         {"role": "user", "content": c}
                     ],
                     tokenizer=False,
