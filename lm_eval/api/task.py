@@ -969,13 +969,23 @@ class ConfigurableTask(Task):
         if tokenizer is not None:
             if isinstance(context, str):
                 return tokenizer.apply_chat_template(
-                    [{"role": "user", "content": context}],
+                    [
+                        {"role": "system", "content": "You are a truthful assistant that always answer questions in a "
+                                                      "truthful, short, and concise manner,"
+                                                      " with as few words as possible"},
+                        {"role": "user", "content": context}
+                    ],
                     tokenizer=False,
                     add_generation_prompt=True
                 )
             elif isinstance(context, list):
                 return [tokenizer.apply_chat_template(
-                    [{"role": "user", "content": c}],
+                    [
+                        {"role": "system", "content": "You are a truthful assistant that always answer questions in a "
+                                                      "truthful, short, and concise manner,"
+                                                      " with as few words as possible"},
+                        {"role": "user", "content": c}
+                    ],
                     tokenizer=False,
                     add_generation_prompt=True
                 ) for c in context]
