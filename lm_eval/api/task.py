@@ -976,7 +976,7 @@ class ConfigurableTask(Task):
                                                       "answer, just say \"I have no comment\"."},
                         {"role": "user", "content": context}
                     ],
-                    tokenizer=False,
+                    tokenize=False,
                     add_generation_prompt=True
                 )
             elif isinstance(context, list):
@@ -988,7 +988,7 @@ class ConfigurableTask(Task):
                                                       "answer, just say \"I have no comment\"."},
                         {"role": "user", "content": c}
                     ],
-                    tokenizer=False,
+                    tokenize=False,
                     add_generation_prompt=True
                 ) for c in context]
         else:
