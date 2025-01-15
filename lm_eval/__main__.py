@@ -396,7 +396,7 @@ def cli_evaluate(args: Union[argparse.Namespace, None] = None) -> None:
                 for task_name, config in results["configs"].items():
                     output_name = "{}_{}".format(
                         re.sub("/|=", "__", args.model_args), task_name
-                    )
+                    ) if args.output_path is None else task_name
                     filename = path.joinpath(f"{output_name}.jsonl")
                     samples_dumped = json.dumps(
                         samples[task_name],
