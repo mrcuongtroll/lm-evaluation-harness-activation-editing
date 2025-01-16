@@ -10,7 +10,7 @@ doc_to_text: ""
 doc_to_target: !function preprocess_aya.aya_detokenizer
 process_results: !function preprocess_aya.process_results
 should_decontaminate: true
-doc_to_decontamination_query: "{{inputs}}"
+doc_to_decontamination_query: "{{inputs+' '+targets}}"
 metric_list:
   - metric: word_perplexity
   - metric: byte_perplexity
