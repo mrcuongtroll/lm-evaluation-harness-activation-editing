@@ -1,0 +1,21 @@
+tag:
+  - aya_dataset
+dataset_path: mrcuongtroll/split_aya_dataset
+dataset_name: null
+output_type: loglikelihood_rolling
+training_split: train
+validation_split: null
+test_split: test
+doc_to_text: ""
+doc_to_target: !function preprocess_aya.aya_detokenizer
+process_results: !function preprocess_aya.process_results
+should_decontaminate: true
+doc_to_decontamination_query: "{{inputs+" "+targets}}"
+metric_list:
+  - metric: word_perplexity
+  - metric: byte_perplexity
+  - metric: bits_per_byte
+metadata:
+  version: 0.0
+dataset_kwargs:
+  trust_remote_code: true

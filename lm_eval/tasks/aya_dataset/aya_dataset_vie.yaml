@@ -1,0 +1,3 @@
+include: aya_dataset_yaml
+task: aya_dataset_vie
+dataset_name: vie
