@@ -3,9 +3,9 @@ tag:
 dataset_path: mrcuongtroll/split_aya_dataset
 dataset_name: null
 output_type: loglikelihood_rolling
-training_split: train
+training_split: null
 validation_split: null
-test_split: test
+test_split: train
 doc_to_text: ""
 doc_to_target: !function preprocess_aya.aya_detokenizer
 process_results: !function preprocess_aya.process_results
