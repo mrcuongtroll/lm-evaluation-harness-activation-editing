@@ -1,5 +1,0 @@
-group: aya_dataset
-task:
-  - aya_dataset_vie
-metadata:
-  version: 0.0
