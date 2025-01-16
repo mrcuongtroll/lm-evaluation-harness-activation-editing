@@ -1,4 +1,4 @@
-tag:
+group:
   - aya_dataset
 dataset_path: mrcuongtroll/split_aya_dataset
 dataset_name: null
